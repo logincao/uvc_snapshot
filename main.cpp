@@ -619,9 +619,9 @@ static void LayoutResCtrl(int winW, int winH)
     g_cbRect.right = g_cbRect.left + kCbBoxSize;
     g_cbRect.bottom = g_cbRect.top + kCbBoxSize;
 
-    // 分辨率列表区域 (在勾选框上方, 向下排列: 首个在顶)
+    // Resolution list area (above checkbox, layout from top to bottom)
     g_resRect.left = margin;
-    g_resRect.right = margin + 200;
+    g_resRect.right = margin + 133; // was 200, reduced by 1/3
     g_resRect.bottom = g_cbRect.top - 10;
     int n = (int)g_resList.size();
     g_resRect.top = g_resRect.bottom - n * kResItemH;
@@ -926,6 +926,8 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
             MinimizeToTray();
             return 0;
         }
+        // BeginPaint clips to invalid region; must invalidate entire client on resize
+        InvalidateRect(hwnd, nullptr, FALSE);
         break;
     case WM_HOTKEY:
         if (wParam == kHotkeyId)
@@ -1546,6 +1548,8 @@ static HWND CreateAppWindow(HINSTANCE hInst)
     wc.cbSize = sizeof(wc);
     wc.lpfnWndProc = WndProc;
     wc.hInstance = hInst;
+    // Invalidate entire client on resize/maximize; else old layout persists in clipped region
+    wc.style = CS_HREDRAW | CS_VREDRAW;
     wc.lpszClassName = L"UvcCaptureWnd";
     wc.hCursor = LoadCursorW(nullptr, IDC_ARROW);
     wc.hbrBackground = (HBRUSH)GetStockObject(BLACK_BRUSH);

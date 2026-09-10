@@ -6,11 +6,14 @@ set "NINJA=%CD%\tools\ninja.exe"
 if not exist "%VCVARS%" goto novc
 if not exist "%NINJA%" goto noninja
 call "%VCVARS%"
-if errorlevel 1 goto loadfail
+if not "%ERRORLEVEL%"=="0" goto loadfail
 "%CMAKE%" -S "%CD%" -B "%CD%\build" -G Ninja -DCMAKE_BUILD_TYPE=Release "-DCMAKE_MAKE_PROGRAM=%NINJA%" >nul
-if errorlevel 1 goto configurefail
+if not "%ERRORLEVEL%"=="0" goto configurefail
 "%CMAKE%" --build "%CD%\build" --parallel
-if errorlevel 1 goto compilefail
+rem NOTE: cmake/link may return a negative code (e.g. -1); "if errorlevel 1" tests >= 1
+rem and would MISS it, so always compare against 0 instead.
+set "RC=%ERRORLEVEL%"
+if not "%RC%"=="0" goto compilefail
 echo BUILD_OK main.exe
 goto end
 :novc
@@ -26,7 +29,7 @@ exit /b 1
 echo ERROR_configure_failed
 exit /b 1
 :compilefail
-echo ERROR_compile_failed
+echo ERROR_compile_failed rc=%RC%
 exit /b 1
 :end
 endlocal
