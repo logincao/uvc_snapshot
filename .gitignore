@@ -1,4 +1,10 @@
-﻿# ===== Files excluded because they exceed GitHub's 100 MB single-file limit =====
+﻿# ===== Build outputs (contain machine-specific absolute paths) =====
+build/
+
+# ===== Runtime artifacts (contains captured camera content) =====
+out.jpg
+
+# ===== Files excluded because they exceed GitHub's 100 MB single-file limit =====
 *.pdb
 uvc_snapshot.zip
 
