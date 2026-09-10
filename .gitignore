@@ -1,7 +1,6 @@
 ﻿# ===== Files excluded because they exceed GitHub's 100 MB single-file limit =====
 *.pdb
 uvc_snapshot.zip
-uvc_snapshoold_t.zip
 
 # ===== Local / editor / temp =====
 .trae/
@@ -9,6 +8,7 @@ uvc_snapshoold_t.zip
 .vscode/
 *.user
 *.log
+uvc_snapshoold_t.zip
 
 # ===== Python / misc artifacts =====
 __pycache__/
