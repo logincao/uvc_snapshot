@@ -3,6 +3,9 @@
 // 使用 Media Foundation 采集, GDI 显示, ESC 退出
 // 启动时枚举摄像头: 无设备则每秒扫描等待, 单设备直接打开, 多设备显示列表供选择
 
+// 应用版本号: 每次修改代码后, 将末尾的小版本号 +1
+#define APP_VERSION L"v1.0.1"
+
 #include <windows.h>
 #include <windowsx.h>
 #include <shellapi.h>
@@ -1574,7 +1577,7 @@ static HWND CreateAppWindow(HINSTANCE hInst)
 
     HWND hwnd = CreateWindowExW(
         0,
-        wc.lpszClassName, L"UVC Capture",
+        wc.lpszClassName, L"UVC Capture " APP_VERSION,
         style,
         posX, posY, winW, winH,
         nullptr, nullptr, hInst, nullptr);
